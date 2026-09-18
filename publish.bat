@@ -4,21 +4,22 @@ REM  Publish the website.
 REM
 REM  Double-click this file, or run  publish.bat  in a terminal.
 REM
-REM  It does the four steps in the right order:
+REM  It does the steps in the right order:
 REM    1. fetches your latest Substack posts and notes
-REM    2. runs the safety check, and STOPS if anything private crept in
-REM    3. bundles up the changes
-REM    4. uploads them, which updates the live site
+REM    2. builds any articles you wrote yourself in the posts folder
+REM    3. runs the safety check, and STOPS if anything private crept in
+REM    4. bundles up the changes
+REM    5. uploads them, which updates the live site
 REM ===========================================================================
 
 cd /d "%~dp0"
 echo.
 echo ============================================================
-echo   Publishing  https://dhruti-k-patel.github.io/
+echo   Publishing  https://dhrutikp.com/
 echo ============================================================
 
 echo.
-echo [1/4] Fetching the latest posts and notes from Substack...
+echo [1/5] Fetching the latest posts and notes from Substack...
 echo.
 python tools\fetch_substack.py
 if errorlevel 1 (
@@ -29,7 +30,22 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/4] Safety check - is anything private about to go public?
+echo [2/5] Building any articles you wrote in the posts folder...
+echo.
+python tools\build_posts.py
+if errorlevel 1 (
+  echo.
+  echo ============================================================
+  echo   STOPPED. An article could not be built - see above.
+  echo   Nothing was uploaded. Fix the file and run this again.
+  echo ============================================================
+  echo.
+  pause
+  exit /b 1
+)
+
+echo.
+echo [3/5] Safety check - is anything private about to go public?
 echo.
 python tools\check_before_publish.py
 if errorlevel 1 (
@@ -44,7 +60,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [3/4] Bundling up your changes...
+echo [4/5] Bundling up your changes...
 echo.
 git add -A
 git diff --cached --quiet
@@ -64,7 +80,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [4/4] Uploading...
+echo [5/5] Uploading...
 echo.
 git push
 if errorlevel 1 (
@@ -82,7 +98,7 @@ if errorlevel 1 (
 echo.
 echo ============================================================
 echo   Done. The live site updates in about a minute:
-echo   https://dhruti-k-patel.github.io/
+echo   https://dhrutikp.com/
 echo ============================================================
 echo.
 pause

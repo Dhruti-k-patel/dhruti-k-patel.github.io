@@ -19,12 +19,22 @@ data/articles.json         Substack posts          ─┐
 data/notes.json            Substack Notes            ├─ generated
 data/substack.js           Both, as a <script> file ─┘
 tools/fetch_substack.py    Regenerates the three files above
+tools/build_posts.py       Turns posts/*.md into pages under writing/
 tools/set_notify_form.py   Connects the Subscribe form to your Google Form
 tools/check_before_publish.py  Safety check — run before every push
 assets/js/config.js        Subscribe-form settings (the only file to edit)
-Links.txt                  Source list of social links
-Professional CV Resume.pdf Source CV
+posts/                     Articles you write yourself (.md files)
+posts/EXAMPLE.md           Template, and the full formatting guide
+writing/                   Generated article pages — never edit by hand
+publish.bat                One step: build, check, upload
+Links.txt                  Source list of social links (not published)
 ```
+
+## Publishing
+
+Double-click **`publish.bat`**. It fetches new Substack posts, builds any
+articles you wrote yourself, runs the safety check, and uploads — stopping
+before upload if anything is wrong.
 
 `index.html` loads `data/substack.js`, not the JSON. The JSON files are there
 for reference and for any other tool that wants them; the `.js` file is what
@@ -202,6 +212,32 @@ every new post.
 
 ---
 
+## Writing articles on this site
+
+Instead of (or alongside) Substack, you can write articles that live here.
+
+1. Copy `posts/EXAMPLE.md`, rename it to whatever you want the web address to
+   read — `nse-first-results.md` becomes `/writing/nse-first-results/`
+2. Fill in the details block at the top, write the article below it
+3. Double-click `publish.bat`
+
+The article gets its own page and appears in the Writing section next to the
+Substack ones, marked **On this site**, and counted in the filter tabs.
+
+`posts/EXAMPLE.md` is the full guide — the details block, every formatting
+option, and tables for figures. It is never published itself. A filename
+starting with `_` is treated as a draft and skipped, so
+`_half-finished.md` stays private until you rename it.
+
+Delete a `.md` file and its page is removed on the next publish.
+
+**One thing to decide, not drift into:** Substack does not just host your
+writing, it emails your subscribers. Articles written here reach nobody
+automatically. Many writers publish on their own site and still post to
+Substack for distribution.
+
+---
+
 ## Updating everything else
 
 The CV content is written directly into `index.html`, in clearly labelled
@@ -227,7 +263,11 @@ article count, which comes from the Substack data.
 
 The site is static, so anything that serves files will host it.
 
-**GitHub Pages** (you already use `dhruti-k-patel.github.io` for the IPO test):
+The site is live at **https://dhrutikp.com** (a Namecheap domain pointing at
+GitHub Pages). The `CNAME` file in this folder is what tells GitHub the domain —
+do not delete it, or the custom address stops working.
+
+**GitHub Pages** (you also use `dhruti-k-patel.github.io` for the IPO test):
 
 1. Create a repository — `dhruti-k-patel.github.io` for the root domain, or any
    name for a subpath.

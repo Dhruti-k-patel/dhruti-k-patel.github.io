@@ -126,7 +126,14 @@
 
   /* ---------------------------------------------------------- articles */
 
-  var articles = (DATA.articles || []).slice();
+  // Articles written on this site (posts/*.md, built by tools/build_posts.py)
+  // sit in the same list as the Substack ones, newest first. Each keeps an
+  // `own` flag so the card can say where it lives.
+  var OWN = (window.SITE_POSTS && window.SITE_POSTS.items) || [];
+
+  var articles = OWN.concat(DATA.articles || []).sort(function (a, b) {
+    return String(b.date || '').localeCompare(String(a.date || ''));
+  });
   var grid = $('#articleGrid');
   var emptyMsg = $('#articleEmpty');
   var filterBox = $('#articleFilters');
@@ -159,18 +166,27 @@
       return '<span class="post-tag">' + esc(t) + '</span>';
     }).join('');
 
+    var badge = a.own
+      ? '<span class="post-badge is-own">On this site</span>'
+      : (isFeature ? '<span class="post-badge">Latest</span>' : '');
+
     var thumb = a.image
-      ? '<div class="post-thumb">' +
-          (isFeature ? '<span class="post-badge">Latest</span>' : '') +
+      ? '<div class="post-thumb">' + badge +
           '<img src="' + esc(a.image) + '" alt="" loading="lazy" decoding="async">' +
         '</div>'
       : '';
 
+    // Own articles open in this tab; Substack ones leave the site.
+    var target = a.own ? '' : ' target="_blank" rel="noopener"';
+
     return '' +
-      '<a class="post-card' + (isFeature ? ' is-feature' : '') + '" href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
+      '<a class="post-card' + (isFeature ? ' is-feature' : '') + '" href="' + esc(a.url) + '"' + target + '>' +
         thumb +
         '<div class="post-body">' +
           '<p class="post-meta">' +
+            // Without a cover there is no image to sit the badge on, so the
+            // "hosted here" marker goes in the meta line instead.
+            (a.own && !a.image ? '<span class="own-flag">On this site</span>' : '') +
             '<time datetime="' + esc(a.date) + '">' + fmtDate(a.date) + '</time>' +
             '<span class="dot">·</span><span>' + a.readingMinutes + ' min read</span>' +
             (a.wordcount ? '<span class="dot">·</span><span>' + a.wordcount.toLocaleString() + ' words</span>' : '') +
@@ -179,7 +195,7 @@
           (a.subtitle ? '<p class="post-sub">' + esc(a.subtitle) + '</p>' : '') +
           '<div class="post-tags">' + tags + '</div>' +
           '<div class="post-foot">' +
-            '<span class="post-read">Read on Substack' + ARROW + '</span>' +
+            '<span class="post-read">' + (a.own ? 'Read article' : 'Read on Substack') + ARROW + '</span>' +
             (a.likes ? '<span class="likes">' + HEART + a.likes + '</span>' : '') +
           '</div>' +
         '</div>' +
