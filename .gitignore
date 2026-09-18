@@ -1,0 +1,24 @@
+# ─────────────────────────────────────────────────────────────────────────
+# PRIVATE — never commit these.
+#
+# The CV carries personal contact details, and contact details for named third
+# parties, none of which belong in public. Anything committed to a public
+# repository is downloadable by anyone and indexed by search engines, and
+# deleting it later does not remove it from the repository's history.
+#
+# The website already carries everything from the CV that belongs in public:
+# roles, dates, awards, patents, publications and education.
+# ─────────────────────────────────────────────────────────────────────────
+Professional CV Resume.pdf
+*.pdf
+
+# Working notes, not part of the site.
+Links.txt
+
+# Local editor / tooling config.
+.claude/
+
+# OS clutter.
+Thumbs.db
+desktop.ini
+.DS_Store
