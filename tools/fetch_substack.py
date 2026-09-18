@@ -20,6 +20,14 @@ from __future__ import annotations
 import json
 import re
 import sys
+
+# Windows consoles default to cp1252; never let an un-encodable character
+# crash a script whose whole job is to report problems clearly.
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -58,7 +66,7 @@ def hearts(reactions) -> int:
 # --------------------------------------------------------------------------
 # Categories
 #
-# Substack's own tags overlap far too much to filter on — nearly every post
+# Substack's own tags overlap far too much to filter on - nearly every post
 # carries "IPO", "Equity Research" and "Stock Analysis" at once, so every tag
 # filter showed the same articles. These three buckets describe what a piece
 # actually is:
@@ -92,7 +100,7 @@ def categorise(title: str, tags: list[str], slug: str) -> str:
     t = (title or "").strip()
     low = t.lower()
     tagset = {x.lower() for x in tags}
-    first_word = low.split(" ")[0].strip(".,:—-") if low else ""
+    first_word = low.split(" ")[0].strip(".,:--") if low else ""
     names_a_company = first_word not in GENERIC_OPENERS
 
     # Reading a specific company's prospectus.

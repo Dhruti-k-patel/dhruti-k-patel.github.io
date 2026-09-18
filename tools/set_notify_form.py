@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Point the site's Subscribe form at your Google Form — in one command.
+Point the site's Subscribe form at your Google Form - in one command.
 
 You do NOT need to read any page source or hunt for field ids. Instead:
 
   1. Build the Google Form with three short-answer questions, in any order:
         Name        Email        Country
-  2. In the form editor, click the ⋮ menu (top right) → "Get pre-filled link".
-  3. Type these exact words as the answers, then click "Get link" → "Copy link":
+  2. In the form editor, click the (3-dot) menu (top right) -> "Get pre-filled link".
+  3. Type these exact words as the answers, then click "Get link" -> "Copy link":
         Name    -> NAME
         Email   -> EMAIL
         Country -> COUNTRY
@@ -15,7 +15,7 @@ You do NOT need to read any page source or hunt for field ids. Instead:
 
         python tools/set_notify_form.py "<paste the copied link here>"
 
-     (Keep the quotes — the URL contains & characters.)
+     (Keep the quotes - the URL contains & characters.)
 
 The script reads the field ids out of that link, works out which is which from
 the words you typed, and rewrites assets/js/config.js. Reload the site and the
@@ -30,6 +30,14 @@ from __future__ import annotations
 
 import re
 import sys
+
+# Windows consoles default to cp1252; never let an un-encodable character
+# crash a script whose whole job is to report problems clearly.
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
 from pathlib import Path
 from urllib.parse import parse_qsl, urlparse
 
@@ -63,7 +71,7 @@ def action_url(url: str) -> str:
     if re.match(r"https://docs\.google\.com/forms/d/[^/e][^/]*/(prefill|edit)", url):
         fail(
             "that is the prefill/edit PAGE, not the pre-filled LINK.\n\n"
-            "You are on the right page — just finish the flow:\n"
+            "You are on the right page - just finish the flow:\n"
             "  1. Type NAME, EMAIL and COUNTRY into the three answer boxes.\n"
             "  2. Click 'Get link' at the bottom of the screen.\n"
             "  3. Click 'COPY LINK' in the bar that appears.\n"
@@ -86,7 +94,7 @@ def read_fields(url: str) -> tuple[dict[str, str], dict[str, str], bool]:
     """Map name/email/country -> entry id.
 
     Preferred: the answers were typed as the words NAME, EMAIL, COUNTRY.
-    Otherwise fall back to inferring from whatever sample answers were used —
+    Otherwise fall back to inferring from whatever sample answers were used -
     anything shaped like an address is the email field, and the two remaining
     fields are taken in the order Google wrote them, which is the order the
     questions appear on the form. That guess is printed for checking.
@@ -101,8 +109,8 @@ def read_fields(url: str) -> tuple[dict[str, str], dict[str, str], bool]:
     if not entries:
         fail(
             "no entry.* fields found in that link.\n"
-            "Make sure you copied the PRE-FILLED link (⋮ menu → Get pre-filled\n"
-            "link → fill the answers → Get link → Copy link), not the plain\n"
+            "Make sure you copied the PRE-FILLED link ((3-dot) menu -> Get pre-filled\n"
+            "link -> fill the answers -> Get link -> Copy link), not the plain\n"
             "form url."
         )
 
@@ -141,7 +149,7 @@ def read_fields(url: str) -> tuple[dict[str, str], dict[str, str], bool]:
         )
 
     if "country" not in found:
-        print("  ! No country field found — the form will send name and email only.")
+        print("  ! No country field found - the form will send name and email only.")
 
     return found, entries, exact
 
@@ -254,7 +262,7 @@ def main(argv: list[str]) -> int:
     print(
         "\nNext: reload the site, click Subscribe, and send yourself a test\n"
         "sign-up. Then check the row actually landed in the form's Responses\n"
-        "tab — the browser cannot read Google's reply, so the page reports\n"
+        "tab - the browser cannot read Google's reply, so the page reports\n"
         "success as long as the request was sent.\n"
     )
     return 0

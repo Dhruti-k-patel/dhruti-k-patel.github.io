@@ -20,6 +20,7 @@ data/notes.json            Substack Notes            ├─ generated
 data/substack.js           Both, as a <script> file ─┘
 tools/fetch_substack.py    Regenerates the three files above
 tools/set_notify_form.py   Connects the Subscribe form to your Google Form
+tools/check_before_publish.py  Safety check — run before every push
 assets/js/config.js        Subscribe-form settings (the only file to edit)
 Links.txt                  Source list of social links
 Professional CV Resume.pdf Source CV
