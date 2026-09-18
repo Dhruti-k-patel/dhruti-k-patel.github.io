@@ -1,4 +1,4 @@
-# Dr. Dhruti Kunjit Patel — personal website
+# Dr. Dhruti Patel — personal website
 
 A single-page personal site: profile, IPO/RHP research work, the full mPulse
 India Substack archive, Substack Notes, career timeline, achievements and

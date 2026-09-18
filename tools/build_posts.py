@@ -218,9 +218,9 @@ PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title_esc} — Dr. Dhruti Kunjit Patel</title>
+<title>{title_esc} — Dr. Dhruti Patel</title>
 <meta name="description" content="{desc_esc}">
-<meta name="author" content="Dr. Dhruti Kunjit Patel">
+<meta name="author" content="Dr. Dhruti Patel">
 <link rel="canonical" href="{site}/writing/{slug}/">
 <meta property="og:type" content="article">
 <meta property="og:title" content="{title_esc}">
@@ -258,7 +258,7 @@ PAGE = """<!DOCTYPE html>
     <a class="brand" href="../../">
       <span class="brand-mark">DK</span>
       <span class="brand-text">
-        <strong>Dr. Dhruti Kunjit Patel</strong>
+        <strong>Dr. Dhruti Patel</strong>
         <small>Stock Market Analyst</small>
       </span>
     </a>
@@ -316,10 +316,10 @@ PAGE = """<!DOCTYPE html>
 <footer class="site-footer">
   <div class="wrap footer-inner">
     <div>
-      <p class="footer-name">Dr. Dhruti Kunjit Patel</p>
+      <p class="footer-name">Dr. Dhruti Patel</p>
       <p class="footer-line">Stock Market Analyst · Dubai, UAE</p>
     </div>
-    <p class="footer-copy">© <span id="year">2026</span> Dr. Dhruti Kunjit Patel. All rights reserved.</p>
+    <p class="footer-copy">© <span id="year">2026</span> Dr. Dhruti Patel. All rights reserved.</p>
   </div>
 </footer>
 
@@ -413,7 +413,7 @@ def build_one(path: Path) -> dict:
             "headline": title,
             "description": re.sub(r"\s+", " ", desc),
             "datePublished": date,
-            "author": {"@type": "Person", "name": "Dr. Dhruti Kunjit Patel"},
+            "author": {"@type": "Person", "name": "Dr. Dhruti Patel"},
             "mainEntityOfPage": f"{SITE_URL}/writing/{slug}/",
         }, indent=2),
     )
