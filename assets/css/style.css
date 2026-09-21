@@ -1017,14 +1017,21 @@ p:last-child { margin-bottom: 0; }
      not the dialog itself, so the close button stays pinned in the corner. */
   max-height: calc(100dvh - 32px);
   overflow: hidden;
-  display: flex; flex-direction: column;
+  /* NB: `display` is deliberately NOT set here. Browsers hide a closed dialog
+     with `dialog:not([open]) { display: none }` in their own stylesheet, and
+     ANY author rule beats a browser rule regardless of specificity. Setting
+     display here left the dialog on screen permanently — it could be closed
+     but never disappeared. The flex layout belongs on [open] below. */
 }
 .notify-dialog::backdrop {
   background: rgba(10, 20, 19, .5);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
-.notify-dialog[open] { animation: dlgIn .22s ease-out; }
+.notify-dialog[open] {
+  display: flex; flex-direction: column;
+  animation: dlgIn .22s ease-out;
+}
 @keyframes dlgIn {
   from { opacity: 0; transform: translateY(10px) scale(.985); }
   to   { opacity: 1; transform: none; }
