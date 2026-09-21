@@ -19,7 +19,7 @@ echo   Publishing  https://dhrutikp.com/
 echo ============================================================
 
 echo.
-echo [1/5] Fetching the latest posts and notes from Substack...
+echo [1/6] Fetching the latest posts and notes from Substack...
 echo.
 python tools\fetch_substack.py
 if errorlevel 1 (
@@ -30,7 +30,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/5] Building any articles you wrote in the posts folder...
+echo [2/6] Building any articles you wrote in the posts folder...
 echo.
 python tools\build_posts.py
 if errorlevel 1 (
@@ -45,7 +45,19 @@ if errorlevel 1 (
 )
 
 echo.
-echo [3/5] Safety check - is anything private about to go public?
+echo [3/6] Checking the Subscribe form still reaches your Google Form...
+echo.
+python tools\check_subscribe_form.py
+if errorlevel 1 (
+  echo.
+  echo   ^>^> WARNING: sign-ups are NOT reaching your sheet. See above.
+  echo   ^>^> The website will still publish. Fix the form when you can.
+  echo.
+  pause
+)
+
+echo.
+echo [4/6] Safety check - is anything private about to go public?
 echo.
 python tools\check_before_publish.py
 if errorlevel 1 (
@@ -60,7 +72,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [4/5] Bundling up your changes...
+echo [5/6] Bundling up your changes...
 echo.
 git add -A
 git diff --cached --quiet
@@ -80,7 +92,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [5/5] Uploading...
+echo [6/6] Uploading...
 echo.
 git push
 if errorlevel 1 (
