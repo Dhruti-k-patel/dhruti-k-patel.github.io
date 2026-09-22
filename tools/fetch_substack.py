@@ -80,7 +80,11 @@ def hearts(reactions) -> int:
 # --------------------------------------------------------------------------
 
 CATEGORY_OVERRIDES: dict[str, str] = {
-    # "some-post-slug": "method",
+    # A sector study, not a framework: eight listed flour millers and how
+    # their IPOs have gone. The rules see a title opening with "The" plus IPO
+    # tags and read that as a method piece - they cannot tell a framework
+    # about IPOs from a sector study that uses IPO history.
+    "the-flour-trade-goes-public": "markets",
 }
 
 # A title opening with one of these is talking about a subject, not a company.
