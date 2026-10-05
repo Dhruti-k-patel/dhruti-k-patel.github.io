@@ -85,6 +85,12 @@ CATEGORY_OVERRIDES: dict[str, str] = {
     # tags and read that as a method piece - they cannot tell a framework
     # about IPOs from a sector study that uses IPO history.
     "the-flour-trade-goes-public": "markets",
+
+    # The OWNERS method demonstrated on five hypothetical IPOs - a framework
+    # piece, not a company read. The rules see a title that opens with a word
+    # they do not treat as generic ("One") and mentions IPOs, and conclude it
+    # is about a named company.
+    "one-month-of-owners-five-ipos-from": "method",
 }
 
 # A title opening with one of these is talking about a subject, not a company.
