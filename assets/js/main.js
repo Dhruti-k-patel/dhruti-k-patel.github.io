@@ -257,7 +257,9 @@
   var stamp = $('#articleStamp');
   if (stamp && DATA.updated) {
     stamp.textContent = 'Showing ' + articles.length + ' article' + (articles.length === 1 ? '' : 's') +
-      ' · last synced from Substack on ' + fmtDate(DATA.updated);
+      // The timestamp only moves when the content actually changed, so this
+      // says when the writing last changed, not when a sync last ran.
+      ' · last updated ' + fmtDate(DATA.updated);
   }
 
   var statEl = $('[data-stat="articles"]');

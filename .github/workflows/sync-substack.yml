@@ -1,0 +1,74 @@
+# =============================================================================
+#  Keep the website in step with Substack, by itself.
+#
+#  Runs once a day on GitHub's servers. Your computer does not need to be on.
+#
+#  It re-reads Substack and commits only if something actually changed, so:
+#    * a new article appears on the site without you doing anything
+#    * when a title test settles, the site follows the winning title
+#    * edits to subtitles and cover images come across too
+#
+#  You can still double-click publish.bat for an immediate update; this is a
+#  safety net, not a replacement.
+#
+#  To run it by hand: the Actions tab on GitHub -> "Sync Substack content"
+#  -> "Run workflow".
+# =============================================================================
+
+name: Sync Substack content
+
+on:
+  schedule:
+    # 03:30 UTC daily = 09:00 India, 07:30 Dubai. Deliberately not on the hour:
+    # GitHub's scheduler is busiest then and delays jobs.
+    - cron: "30 3 * * *"
+  workflow_dispatch:        # the "Run workflow" button
+
+permissions:
+  contents: write           # needed to commit the refreshed data files
+
+concurrency:
+  group: sync-substack
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Read the latest articles and notes from Substack
+        run: python tools/fetch_substack.py
+
+      - name: Build any articles written in posts/
+        run: python tools/build_posts.py
+
+      - name: Fingerprint styles and scripts
+        run: python tools/stamp_assets.py
+
+      - name: Safety check before anything is published
+        run: python tools/check_before_publish.py
+
+      - name: Commit, but only if something changed
+        run: |
+          if git diff --quiet; then
+            echo "Nothing new on Substack - leaving the site as it is."
+            exit 0
+          fi
+
+          echo "Changes found:"
+          git diff --stat
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit \
+            -m "Sync latest Substack articles and notes" \
+            -m "Automatic daily sync. Picks up new posts, and any title or subtitle that changed after publication - for example when a title test settles on its winner."
+          git push
