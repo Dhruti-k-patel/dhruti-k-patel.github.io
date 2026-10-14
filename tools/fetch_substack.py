@@ -91,6 +91,12 @@ CATEGORY_OVERRIDES: dict[str, str] = {
     # they do not treat as generic ("One") and mentions IPOs, and conclude it
     # is about a named company.
     "one-month-of-owners-five-ipos-from": "method",
+
+    # Four REAL prospectuses read company by company. OWNERS is the method
+    # used, not the subject - unlike the anniversary piece above, which works
+    # through hypothetical IPOs to teach the framework. The rules see no "IPO"
+    # in the title and IPO tags underneath, and fall through to method.
+    "four-ipos-open-on-15-october-strengths": "company",
 }
 
 # A title opening with one of these is talking about a subject, not a company.
