@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+import time
 
 # Windows consoles default to cp1252; never let an un-encodable character
 # crash a script whose whole job is to report problems clearly.
@@ -47,10 +48,47 @@ UA = (
 )
 
 
-def get_json(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+def get_json(url: str, attempts: int = 4):
+    """Fetch JSON, retrying when Substack pushes back.
+
+    Substack rate-limits and sometimes refuses requests outright from data
+    centre addresses, which is what GitHub's scheduled runners use. That shows
+    up as 403 or 429 and usually clears on a retry a few seconds later, so a
+    single attempt is not enough when this runs unattended.
+    """
+    headers = {
+        "User-Agent": UA,
+        "Accept": "application/json",
+        "Accept-Language": "en-GB,en;q=0.9",
+        "Referer": PUBLICATION + "/",
+    }
+    last = None
+    for attempt in range(1, attempts + 1):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            last = exc
+            body = ""
+            try:
+                body = exc.read().decode("utf-8", "ignore")[:160].replace("\n", " ")
+            except Exception:
+                pass
+            print(f"  attempt {attempt}/{attempts}: HTTP {exc.code} {exc.reason} "
+                  f"for {url.split('?')[0][-52:]}", file=sys.stderr)
+            if body:
+                print(f"    response: {body}", file=sys.stderr)
+            if exc.code not in (403, 408, 425, 429, 500, 502, 503, 504):
+                raise
+        except urllib.error.URLError as exc:
+            last = exc
+            print(f"  attempt {attempt}/{attempts}: {exc.reason}", file=sys.stderr)
+
+        if attempt < attempts:
+            time.sleep(attempt * 5)   # 5s, 10s, 15s
+
+    raise last if last else RuntimeError("could not reach Substack")
 
 
 def reading_minutes(words: int) -> int:
@@ -266,8 +304,11 @@ def main() -> int:
         print("Fetching notes...")
         notes = fetch_notes()
         print(f"  {len(notes)} notes")
-    except urllib.error.URLError as exc:
-        print(f"Network error: {exc}. Existing data files were left untouched.", file=sys.stderr)
+    except Exception as exc:
+        print("", file=sys.stderr)
+        print(f"Could not read Substack: {exc}", file=sys.stderr)
+        print("Existing data files were left untouched - nothing on the site changed.",
+              file=sys.stderr)
         return 1
 
     # Only move the timestamp on when the content itself changed. The daily
