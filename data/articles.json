@@ -1,7 +1,63 @@
 {
-  "updated": "2026-10-22T05:47:12+00:00",
+  "updated": "2026-11-03T10:43:47+00:00",
   "source": "https://mpulseindia.substack.com",
   "items": [
+    {
+      "id": 222629577,
+      "title": "Bombay Coated and Special Steels IPO: Four Gates Tested, One Not Met",
+      "subtitle": "ROCE averages 18.1%, the integrity record is clean, and the price needs less growth than delivered. Gate 2 isn't met: Interest cover is 2.14x against a 3x line.",
+      "excerpt": "Published 29 October 2026, day 1 of bidding (the issue closes Monday 2 November). Every company figure comes from the Red Herring Prospectus (RHP) unless stated otherwise. Page numbers are the RHP’s printed page numbers (PDF page = printed page + 6). The RHP reports in ₹ million; I convert to ₹ crore (₹10 million = ₹1 crore). Market prices and index P/E…",
+      "slug": "bombay-coated-and-special-steels",
+      "url": "https://mpulseindia.substack.com/p/bombay-coated-and-special-steels",
+      "date": "2026-10-29T12:32:14.333Z",
+      "image": "https://substack-post-media.s3.amazonaws.com/public/images/4a4ca263-4746-4db9-b4fc-52f2d4768cfb_2912x1632.png",
+      "wordcount": 3480,
+      "readingMinutes": 15,
+      "likes": 3,
+      "tags": [
+        "Mainboard IPO",
+        "Bombay Coated and Special Steels",
+        "RHP",
+        "Steel",
+        "JSW",
+        "RHP Analysis",
+        "OWNERS Framework",
+        "updated OWNERS Framework",
+        "IPO",
+        "Appliances"
+      ],
+      "category": "company"
+    },
+    {
+      "id": 222610608,
+      "title": "The Five Gates, Updated: What Changed in OWNERS, and Why",
+      "subtitle": "Every IPO piece here has asked you to trust five gates. When I tested them, some rules turned out to be too strict. Before the next IPO, you deserve to know what changed, and why.",
+      "excerpt": "Written 28 October 2026. This piece explains the rules which I have derived after testing the original framework on an ample number of past IPOs from 2022 to 2025. The companies in the worked examples are illustrative, not real issuers, and the numbers are round on purpose so the arithmetic is easy to follow. I am not a SEBI registered Research Analyst …",
+      "slug": "the-five-gates-updated-what-changed",
+      "url": "https://mpulseindia.substack.com/p/the-five-gates-updated-what-changed",
+      "date": "2026-10-29T09:02:01.225Z",
+      "image": "https://substack-post-media.s3.amazonaws.com/public/images/edfb2139-d959-484e-9b7c-759a5f6ae358_2912x1632.png",
+      "wordcount": 3233,
+      "readingMinutes": 14,
+      "likes": 1,
+      "tags": [
+        "RHP",
+        "Personal Finance India",
+        "stock patterns",
+        "post listing analysis",
+        "red flags",
+        "SME IPO",
+        "Stock Analysis",
+        "NSE",
+        "RHP Analysis",
+        "OWNERS Framework",
+        "updated OWNERS Framework",
+        "Post IPO Analysis",
+        "Value Investing",
+        "valuation"
+      ],
+      "category": "method"
+    },
     {
       "id": 221302046,
       "title": "Jio Platforms IPO: What ₹1,119 a Share Buys Beyond the Brand",
@@ -13,7 +69,7 @@
       "image": "https://substack-post-media.s3.amazonaws.com/public/images/2be9fa65-b875-4684-b55d-a30964419894_2912x1632.png",
       "wordcount": 6811,
       "readingMinutes": 30,
-      "likes": 2,
+      "likes": 4,
       "tags": [
         "RHP",
         "Indian Stock Market",
