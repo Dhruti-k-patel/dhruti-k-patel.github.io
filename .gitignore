@@ -12,6 +12,14 @@
 Professional CV Resume.pdf
 *.pdf
 
+# Archives and phone exports. These arrive holding scans of certificates,
+# receipts and identity documents, and a .zip hides what is inside it from
+# any check that reads text.
+*.zip
+*.rar
+*.7z
+WhatsApp *
+
 # Working notes, not part of the site.
 Links.txt
 
