@@ -44,7 +44,12 @@ ALLOWED_EMAILS = {
 }
 
 # Extensions that should never be committed - CVs, letters, spreadsheets.
-RISKY_SUFFIXES = {".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv", ".key", ".pem", ".env"}
+# Documents, and archives that could hold any of them. A .zip is worse than a
+# loose file: nothing that reads text can see what is inside it.
+RISKY_SUFFIXES = {
+    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv", ".key", ".pem", ".env",
+    ".zip", ".rar", ".7z", ".tar", ".gz",
+}
 
 SECRET_PATTERNS = {
     "password":        r'password\s*[:=]\s*["\'][^"\']{3,}',
@@ -75,9 +80,17 @@ def git(*args: str) -> str:
 
 
 def tracked_files() -> list[str]:
-    """Everything committed or staged - i.e. what a push would publish."""
+    """Everything a push would publish, including files not yet added.
+
+    Untracked files matter: publish.bat runs `git add -A` AFTER this check,
+    so anything sitting loose in the folder gets swept in moments later. A
+    zip of personal certificates was published exactly this way - the check
+    said "safe" because the file was not yet staged. Files matched by
+    .gitignore are excluded, since those genuinely never get added.
+    """
     out = set(git("ls-files").split("\n"))
     out |= set(git("diff", "--cached", "--name-only").split("\n"))
+    out |= set(git("ls-files", "--others", "--exclude-standard").split("\n"))
     return sorted(f for f in out if f.strip())
 
 
