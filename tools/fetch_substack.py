@@ -171,15 +171,30 @@ def categorise(title: str, tags: list[str], slug: str) -> str:
 
 
 def fetch_articles() -> list[dict]:
-    posts, offset = [], 0
-    while True:
-        batch = get_json(f"{PUBLICATION}/api/v1/archive?sort=new&limit=50&offset={offset}")
+    """Every post, newest first.
+
+    Substack changed this endpoint in November 2026: it used to return a bare
+    list and accept limit=50 with an offset, and now it returns
+    {"posts": [...], "nextCursor": ...}, caps limit at 12, and rejects offset
+    outright. Paging is by cursor, the same as the notes feed.
+    """
+    posts, cursor, pages = [], None, 0
+    while pages < 40:                      # 40 x 12 = 480 posts, ample
+        url = f"{PUBLICATION}/api/v1/archive?sort=new&limit=12"
+        if cursor:
+            url += "&cursor=" + urllib.parse.quote(str(cursor), safe="")
+        payload = get_json(url)
+
+        # Tolerate either shape, so an older or newer API still works.
+        batch = payload.get("posts") if isinstance(payload, dict) else payload
         if not batch:
             break
         posts.extend(batch)
-        if len(batch) < 50:
+
+        cursor = payload.get("nextCursor") if isinstance(payload, dict) else None
+        pages += 1
+        if not cursor:
             break
-        offset += 50
 
     out = []
     for p in posts:
